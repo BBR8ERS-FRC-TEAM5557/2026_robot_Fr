@@ -1,9 +1,16 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Flywheels extends SubsystemBase {
+
+    private static final int kFlywheelmotor = 0;
+        Talon Flywheel = new Talon (kFlywheelmotor);
+
+        // PID controller for flywheel speed regulation
     PIDController flywheelPID = new PIDController(0.1, 0.0, 0.0);
     // Define flywheel states with associated RPM values
     public enum FlywheelState {
@@ -27,9 +34,32 @@ public class Flywheels extends SubsystemBase {
     }
     public FlywheelState currentState = FlywheelState.OFF;
 
+
+    @Override
+    public void periodic() {
+        super.periodic();
+    }  void setState(FlywheelState state) {
+        currentState = state;
+        // Additional logic to set motor speeds based on state can be added here
+    }
+
+    public Command Shoot() {
+        // Command to set flywheels to SHOOT state
+        return startEnd(() -> setState(FlywheelState.SHOOT), () -> setState(FlywheelState.IDLE)).withName("Shoot Command");
+    }
     
+    public Command Ferry() {
+        // Command to set flywheels to FERRY state
+        return startEnd(() -> setState(FlywheelState.FERRY), () -> setState(FlywheelState.IDLE)).withName("Ferry Command");
+        
+    }
     
-    
+    public Command Stop() {
+        // Command to stop the flywheels
+        return startEnd(() -> setState(FlywheelState.OFF), () -> {}).withName("Stop Flywheels Command");
+    }
+
+
 
     
 }
