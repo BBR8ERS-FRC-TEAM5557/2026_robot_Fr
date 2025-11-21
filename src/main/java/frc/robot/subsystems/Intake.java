@@ -11,7 +11,7 @@ public class Intake extends SubsystemBase {
         OFF (0),
         IDLE (200),
         INTAKE (500),
-        OUTTAKE (-500);
+        OUTTAKE (500);
 
         private int rpm;
         // Constructor to initialize the RPM value for each state
